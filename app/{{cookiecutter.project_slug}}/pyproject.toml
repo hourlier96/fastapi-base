@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi-base"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi",
+    "pydantic-settings"
+]
+
+[project.optional-dependencies]
+dev = [
+    "fastapi[standard]",
+    "debugpy",
+    "pytest",
+    "ruff",
+]
