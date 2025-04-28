@@ -25,6 +25,12 @@ devcontainer up --build-no-cache --workspace-folder .
 # Then use VSCode launcher to attach debugger to the container
 ```
 
+## Tests
+
+```sh
+python3 -m tests
+```
+
 ## CI/CD
 
 ### CI with Github Actions

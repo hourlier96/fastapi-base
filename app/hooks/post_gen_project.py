@@ -1,4 +1,5 @@
 import os
+import shutil
 
 # Add root to path, so hooks_modules can be imported from the
 # temporary directory created by cookiecutter while generating
@@ -39,3 +40,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(e)
         sys.exit(1)
+    finally:
+        shutil.rmtree("hooks_modules")
