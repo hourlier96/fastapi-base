@@ -16,8 +16,9 @@ FROM python:3.13-alpine
 
 RUN addgroup -S appgroup && adduser -S -s /bin/ash appuser -G appgroup
 
-# bash installed to make pre-commit runnable
-RUN apk update && apk add --no-cache git bash
+# bash to make pre-commit runnable
+# openssh-client to allow git push
+RUN apk update && apk add --no-cache git bash openssh-client
 
 WORKDIR /home/appuser/code
 
