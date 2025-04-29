@@ -1,0 +1,60 @@
+name: Test generation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-generation:
+    name: "Lint & run generated application"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Install global dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate backend template
+        run: cd ../ && cookiecutter fastapi-base/app --no-input
+
+      - name: Install uv (in generated project context)
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Test generated application
+        working-directory: ../my_awesome_api
+        run: |
+          uv venv --python $(which python)
+          source .venv/bin/activate
+
+          uv pip install -e .[dev]
+
+          echo "Checking server status"
+          uvicorn app.main:app --port 8000 &
+          WAIT_INTERVAL=1
+          ELAPSED_TIME=0
+          while ! curl -sf --head http://localhost:8000/api/health > /dev/null; do
+              if [ $ELAPSED_TIME -ge 5 ]; then
+                  echo "Server failed to start"
+                  exit 1
+              fi
+              sleep $WAIT_INTERVAL
+              ELAPSED_TIME=$((ELAPSED_TIME + WAIT_INTERVAL))
+          done
+          
+          echo "Running Ruff..."
+          ruff check app tests
+
+          echo "Running MyPy..."
+          mypy app
+
+          echo "Running Pytest..."
+          pytest
+
+          
