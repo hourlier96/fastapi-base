@@ -16,6 +16,19 @@ dependencies = [
 dev = [
     "fastapi[standard]",
     "debugpy",
+    "ruff==0.11.7",
+    "mypy==1.15.0",
+    "pre-commit",
     "pytest",
-    "ruff",
+    "pytest-asyncio",
 ]
+
+[tool.mypy]
+python_version = "3.13"    
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+# https://github.com/pytest-dev/pytest-asyncio/issues/924
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"

@@ -50,12 +50,11 @@
   },
   "portsAttributes": {
     "8000": {
-      "label": "FastAPI",
-      "onAutoForward": "openBrowser"
+      "label": "{{cookiecutter.project_name}}"
     },
     "5678": {
       "label": "Python Debugger"
     }
   },
-  "overrideCommand": false
+  "postAttachCommand": "pre-commit install"
 }

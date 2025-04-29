@@ -16,7 +16,8 @@ FROM python:3.13-alpine
 
 RUN addgroup -S appgroup && adduser -S -s /bin/ash appuser -G appgroup
 
-RUN apk update && apk add --no-cache git
+# bash installed to make pre-commit runnable
+RUN apk update && apk add --no-cache git bash
 
 WORKDIR /home/appuser/code
 

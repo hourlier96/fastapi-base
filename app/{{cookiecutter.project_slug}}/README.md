@@ -6,18 +6,23 @@
 
 {{cookiecutter.description}}
 
-## Run locally
+## Installation
+
+You can run the application locally, or use Dev Container benefits
+
+### Local
 
 ```sh
 uv venv
 source .venv/bin/activate
 uv pip compile pyproject.toml --extra dev -o requirements.txt
 uv pip install -r requirements.txt
+pre-commit install
 
-# Then run VSCode launcher 
+# Then use VSCode launcher to run the app
 ```
 
-## In Container
+### Dev container
 
 ```sh
 devcontainer up --build-no-cache --workspace-folder .
@@ -28,7 +33,7 @@ devcontainer up --build-no-cache --workspace-folder .
 ## Tests
 
 ```sh
-python3 -m tests
+python3 -m pytest
 ```
 
 ## CI/CD
@@ -37,7 +42,7 @@ python3 -m tests
 
 [**Enable Github Actions API**](https://github.com/hourlier96/fastapi-base/actions) in your repository
 
-Actions are configured to run linting for every Pull Request on develop, uat and main branches
+Actions are configured to run linting for every Pull Request on 'develop', 'next' and 'main' branches
 
 ## Api docs
 

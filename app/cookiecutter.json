@@ -2,7 +2,7 @@
   "repository_name": "",
   "project_name": "My awesome API",
   "project_slug": "{{cookiecutter.project_name.lower().replace(' ', '_')}}",
-  "description": "Use this project as a ready to dev FastAPI environment",
+  "description": "A ready to dev FastAPI environment",
   "__prompts__": {
     "repository_name": "Empty repository name you want to push to (let empty to refuse or use format <github_username>/<repo_name>):",
     "project_name": "Select your project name:",
