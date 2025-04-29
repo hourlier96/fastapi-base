@@ -8,8 +8,7 @@ ROUTERS_DIRECTORIES: List[str] = []
 
 api_router = APIRouter()
 
-
-@api_router.get("/health", tags=["Health"])
+@api_router.api_route("/health", methods=['GET', 'HEAD'], tags=["Health"])
 def get_health() -> Dict:
     return {"status": "OK"}
 

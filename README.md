@@ -15,7 +15,9 @@ Clone this repository and install dependencies
 
 ```bash
 cd fastapi-base
-python3 -m pip install -r requirements.txt
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
 ```
 
 (Optional): Add a github access token to .env file if you want the branch protection to be automated at generation
@@ -49,3 +51,13 @@ cookiecutter fastapi-base/app   # Will ask your needs from cookiecutter.json
 - **'project_slug'** is the name of the generated folder
 
 - **'description'** will be added under the project name in the ReadMe.
+
+## CI
+
+The generation is tested to ensure the template is working as expected.
+
+Test locally with [act](https://github.com/nektos/act):
+
+```sh
+act -j test-generation --rm -W .github/workflows/template-generation.yaml
+```

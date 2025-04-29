@@ -22,7 +22,7 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install Dependencies (uv)
+      - name: Install Dependencies
         run: |
           uv venv .venv --python 3.13
           source .venv/bin/activate
@@ -48,7 +48,7 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install Dependencies (uv)
+      - name: Install Dependencies
         run: |
           uv venv .venv --python 3.13
           source .venv/bin/activate
