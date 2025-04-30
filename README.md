@@ -52,6 +52,8 @@ cookiecutter fastapi-base/app   # Will ask your needs from cookiecutter.json
 
 - **'description'** will be added under the project name in the ReadMe.
 
+- **'database'** will add selected async dependencies to the pyproject.toml
+
 ## CI
 
 The generation is tested to ensure the template is working as expected.

@@ -18,8 +18,11 @@ if __name__ == "__main__":
     load_dotenv(dotenv_path="./.env")
     print("\nRunning post generation hooks...\n")
     try:
+        # Was .j2 for jinja syntax recognition
+        os.rename('./pyproject.toml.j2', 'pyproject.toml')
         if "{{ cookiecutter.repository_name}}":
             print("Pushing template to {{ cookiecutter.repository_name }}...")
+            
             main.checkRepositoryNameOption("{{ cookiecutter.repository_name }}")
             if os.getenv("GITHUB_ACCESS_TOKEN"):
                 print(
@@ -31,6 +34,8 @@ if __name__ == "__main__":
                 )
             else:
                 print("No github token found. Skip branches protection...")
+
+        
 
         print("\nDone ! 🎉")
         print(

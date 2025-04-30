@@ -17,7 +17,7 @@ uv venv
 source .venv/bin/activate
 uv pip compile pyproject.toml --extra dev -o requirements.txt
 uv pip install -r requirements.txt
-pre-commit install
+pre-commit install  # Optional: requires git repository
 
 # Then use VSCode launcher to run the app
 ```

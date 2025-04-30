@@ -33,6 +33,7 @@ poetry.toml
 
 ### Custom files
 hooks_modules
+pyproject.toml.j2
 .pgdata
 
 # Terraform

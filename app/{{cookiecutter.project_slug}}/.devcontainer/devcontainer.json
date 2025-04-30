@@ -56,5 +56,5 @@
       "label": "Python Debugger"
     }
   },
-  "postAttachCommand": "pre-commit install"
+  "postCreateCommand": "if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then pre-commit install; else echo 'Skipping pre-commit install: Not a git repository.'; fi"
 }

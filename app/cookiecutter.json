@@ -3,10 +3,18 @@
   "project_name": "My awesome API",
   "project_slug": "{{cookiecutter.project_name.lower().replace(' ', '_')}}",
   "description": "A ready to dev FastAPI environment",
+  "database": [
+    "none",
+    "postgresql (asyncpg)",
+    "sqlite (aiosqlite)",
+    "mysql (aiomysql)",
+    "mongodb (motor)"
+  ],
   "__prompts__": {
     "repository_name": "Empty repository name you want to push to (let empty to refuse or use format <github_username>/<repo_name>):",
     "project_name": "Select your project name:",
     "project_slug": "Select your project slug:",
-    "description": "Add a description to the ReadMe:"
+    "description": "Add a description to the ReadMe:",
+    "database_type": "Select database dependencies to include: "
   }
 }
