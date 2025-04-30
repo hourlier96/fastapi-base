@@ -3,39 +3,38 @@ from typing import NoReturn
 from fastapi import HTTPException, status
 from fastapi.security import HTTPBearer
 
-oauth2_scheme = HTTPBearer()
+# oauth2_scheme = HTTPBearer()
 
-
-def raise_400(msg=None) -> NoReturn:
+def raise_400(msg: str = "Bad Request") -> NoReturn:
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
-        detail=msg if msg else "Bad Request",
+        detail=msg,
     )
 
 
-def raise_401() -> NoReturn:
+def raise_401(msg: str = "Not authorized") -> NoReturn:
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Not authorized.",
+        detail=msg,
     )
 
 
-def raise_403() -> NoReturn:
+def raise_403(msg: str = "Not authorized") -> NoReturn:
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
-        detail="Forbidden.",
+        detail=msg,
     )
 
 
-def raise_404() -> NoReturn:
+def raise_404(msg: str = "Not found") -> NoReturn:
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail="Not found.",
+        detail=msg,
     )
 
 
-def raise_500() -> NoReturn:
+def raise_500(msg: str = "Internal Server Error") -> NoReturn:
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail="Internal Server Error",
+        detail=msg,
     )
