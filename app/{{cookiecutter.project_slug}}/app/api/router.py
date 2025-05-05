@@ -4,11 +4,11 @@ from typing import Dict, List
 from fastapi import APIRouter
 
 # Add any path to file containing a router module
-ROUTERS_DIRECTORIES: List[str] = []
+ROUTERS_DIRECTORIES: List[str] = ['app/api/routers']
 
 api_router = APIRouter()
 
-@api_router.api_route("/health", methods=['GET', 'HEAD'], tags=["Health"])
+@api_router.api_route("/health", methods=['HEAD'], tags=["Health"])
 def get_health() -> Dict:
     return {"status": "OK"}
 

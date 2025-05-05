@@ -23,7 +23,7 @@ if settings.BACKEND_CORS_ORIGINS:
 
 app.include_router(api_router, prefix=settings.API_PREFIX)
 
-{% if cookiecutter.database == "mongodb (motor)" %}
+{% if cookiecutter.database == "mongodb (motor)" -%}
 from fastapi.concurrency import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI):
         mongo = MongoDB(settings.MONGO_DB_URI, settings.MONGO_DB_NAME)
         app.state.mongo = mongo
         print(
-            f"Application startup: Successfully connected to MongoDB database {os.getenv('MONGO_DB_NAME')}!"
+            f"Application startup: Successfully connected to MongoDB database {settings.MONGO_DB_NAME}!"
         )
     except ConnectionFailure as e:
         if mongo.client:

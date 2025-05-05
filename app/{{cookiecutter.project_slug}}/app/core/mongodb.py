@@ -1,4 +1,7 @@
 import os
+
+from fastapi import Depends
+from typing import Annotated
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
@@ -41,6 +44,8 @@ class MongoDB:
             raise e
 
 async def get_mongo_instance() -> MongoDB:
-    from main import app
+    from app.main import app
 
     return app.state.mongo
+
+SessionDep = Annotated[MongoDB, Depends(get_mongo_instance)]

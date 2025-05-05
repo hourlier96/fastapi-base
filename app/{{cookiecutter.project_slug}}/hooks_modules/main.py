@@ -63,6 +63,7 @@ def checkDatabaseOption(selection):
     if selection in databases:
         del databases[databases.index(selection)]
     
+    # Remove all database clients except selected
     for d in databases:
         db_name = d.split(' ')[0]
         os.remove(f"app/core/{db_name}.py")
