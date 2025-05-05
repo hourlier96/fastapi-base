@@ -20,6 +20,10 @@ if __name__ == "__main__":
     try:
         # Was .j2 for jinja syntax recognition
         os.rename('./pyproject.toml.j2', 'pyproject.toml')
+        
+        # Remove unnecessary content
+        main.checkDatabaseOption("{{ cookiecutter.database}}")
+
         if "{{ cookiecutter.repository_name}}":
             print("Pushing template to {{ cookiecutter.repository_name }}...")
             

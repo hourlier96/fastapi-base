@@ -1,4 +1,5 @@
 import json
+import os
 
 import git
 import requests
@@ -56,3 +57,14 @@ def enableBranchesProtection(repo_name, github_token):
             print(f"Failed to activate protection for branch {branch}:")
             print(response.json())
             break
+
+def checkDatabaseOption(selection):
+    databases = ["sqlite (aiosqlite)", "mongodb (motor)"]
+    if selection in databases:
+        del databases[databases.index(selection)]
+    
+    for d in databases:
+        db_name = d.split(' ')[0]
+        os.remove(f"app/core/{db_name}.py")
+
+    
