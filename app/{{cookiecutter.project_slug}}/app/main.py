@@ -47,6 +47,42 @@ async def lifespan(app: FastAPI):
         app.state.mongo.client.close()
 {%- endif %}
 
+{% if cookiecutter.database == "sqlite (aiosqlite)" -%}
+from fastapi.concurrency import asynccontextmanager
+from app.core.sqlite import engine, Base
+
+from app.core.sqlite import session_factory
+from app.api.models.user import User
+from app.api.models.todo import Todo
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        print("Creating tables...")
+        await conn.run_sync(Base.metadata.create_all)
+    async with session_factory() as db:
+        async with db.begin():
+            users_to_add = []
+            for i in range(1, 10):
+                email = f"user{i}@example.com"
+                user = User(email=email)
+                users_to_add.append(user)
+                todo_to_add = []
+                for j in range(1, 20):
+                    title = f"Title n°{j}"
+                    status = "PENDING"
+                    user_id = i
+                    todo = Todo(title=title, status=status, user_id=user_id)
+                    todo_to_add.append(todo)
+                db.add_all(todo_to_add)
+            db.add_all(users_to_add)
+    yield
+    async with engine.begin() as conn:
+        print("Purging database...")
+        await conn.run_sync(Base.metadata.drop_all)
+{%- endif %}
+
 app.router.lifespan_context = lifespan
 
 if __name__ == "__main__":

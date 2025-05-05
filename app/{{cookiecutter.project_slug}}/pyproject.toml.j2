@@ -10,12 +10,10 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "pydantic-settings",
-    {%- if cookiecutter.database == "postgresql (asyncpg)" %}
-    "asyncpg",
-    {%- elif cookiecutter.database == "sqlite (aiosqlite)" %}
+    {%- if cookiecutter.database == "sqlite (aiosqlite)" %}
+    "sqlalchemy",
     "aiosqlite",
-    {%- elif cookiecutter.database == "mysql (aiomysql)" %}
-    "aiomysql",
+    "greenlet",
     {%- elif cookiecutter.database == "mongodb (motor)" %}
     "motor",
     {%- endif %}
