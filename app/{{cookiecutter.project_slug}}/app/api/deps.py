@@ -3,7 +3,7 @@ from typing import NoReturn
 from fastapi import HTTPException, status
 from fastapi.security import HTTPBearer
 
-# oauth2_scheme = HTTPBearer()
+oauth2_scheme = HTTPBearer()
 
 def raise_400(msg: str = "Bad Request") -> NoReturn:
     raise HTTPException(

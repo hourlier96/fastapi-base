@@ -1,15 +1,20 @@
 # FastAPI Template Generator
 
-This repository provides a duplicable [FastAPI](https://fastapi.tiangolo.com/) code base with devcontainer:
+A duplicable [FastAPI](https://fastapi.tiangolo.com/) code base:
 
 [See ReadMe](app/{{cookiecutter.project_slug}}/README.md)
 
-- - -
+## Features
 
-The template is
+New project generation with [cookiecutter](https://github.com/cookiecutter/cookiecutter)
 
-- Based on [cookiecutter](https://www.cookiecutter.io/)
-- Auto-pushable on Github when generated
+- Automated push on empty repository
+- [devcontainer](https://code.visualstudio.com/docs/remote/containers) environment
+- Linting & Formatter with [ruff](https://github.com/charliermarsh/ruff) & [mypy](https://github.com/python/mypy)
+- Precommit hooks with [precommit](https://pre-commit.com)
+- [Github Actions](https://github.com/features/actions) CI/CD pipeline
+
+## Generation
 
 Clone this repository and install dependencies
 
@@ -33,7 +38,7 @@ Generate the code base
 cookiecutter fastapi-base/app   # Will ask your needs from cookiecutter.json
 ```
 
-## Options
+### Options
 
 - **'repository_name'** allows you to specify an empty-existing Git repository to push the template on.
 
