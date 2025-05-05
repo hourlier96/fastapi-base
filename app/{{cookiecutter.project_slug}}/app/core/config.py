@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 {%- if cookiecutter.database == "mongodb (motor)" %}
     DB_ADDRESS: str = "host.docker.internal"       # or localhost without container
     MONGO_DB_NAME : str = "test_db"
-    MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"  
+    MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"
 {%- endif %}    
 
     model_config = SettingsConfigDict(env_file=".env")

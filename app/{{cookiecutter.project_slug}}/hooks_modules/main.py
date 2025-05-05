@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import subprocess
 
 import git
 import requests
@@ -74,4 +75,7 @@ def checkDatabaseOption(selection):
         shutil.rmtree("app/api/models")
         shutil.rmtree("app/api/schemas")
 
-    
+    # Run ruff before pushing
+    print("Formatting code...")
+    subprocess.run(["ruff", "format", "app/"])
+    subprocess.run(["ruff", "check", "--fix", "app/"])

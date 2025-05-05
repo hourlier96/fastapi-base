@@ -1,7 +1,10 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.sqlite import Base
+
+if TYPE_CHECKING:
+    from .todo import Todo
 
 class User(Base):
     __tablename__ = "user"

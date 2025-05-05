@@ -1,9 +1,9 @@
-import os
+from typing import Annotated
 
 from fastapi import Depends
-from typing import Annotated
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
+
 
 class MongoDB:
     def __init__(self, database_uri: str, database_name):

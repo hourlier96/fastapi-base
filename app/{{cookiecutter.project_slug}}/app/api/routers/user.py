@@ -1,5 +1,6 @@
-from typing import Dict, Annotated
-from fastapi import APIRouter, Depends, Query
+from typing import Annotated, Dict
+
+from fastapi import APIRouter, Query
 
 {% if cookiecutter.database == "mongodb (motor)" -%}
 from app.core.mongodb import SessionDep

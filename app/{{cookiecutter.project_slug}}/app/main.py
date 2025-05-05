@@ -5,6 +5,20 @@ from starlette.middleware.cors import CORSMiddleware
 from app.api.router import api_router
 from app.core.config import settings
 
+{% if cookiecutter.database == "mongodb (motor)" -%}
+from fastapi.concurrency import asynccontextmanager
+from pymongo.errors import ConnectionFailure
+from app.core.mongodb import MongoDB
+{% endif %}
+
+{% if cookiecutter.database == "sqlite (aiosqlite)" -%}
+from fastapi.concurrency import asynccontextmanager
+from app.core.sqlite import engine, Base
+from app.core.sqlite import session_factory
+from app.api.models.user import User
+from app.api.models.todo import Todo
+{% endif %}
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_PREFIX}/openapi.json",
@@ -24,19 +38,15 @@ if settings.BACKEND_CORS_ORIGINS:
 app.include_router(api_router, prefix=settings.API_PREFIX)
 
 {% if cookiecutter.database == "mongodb (motor)" -%}
-from fastapi.concurrency import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    import os
-    from app.core.mongodb import MongoDB
-    from pymongo.errors import ConnectionFailure
-
     print("Connecting to MongoDB...")
     try:
         mongo = MongoDB(settings.MONGO_DB_URI, settings.MONGO_DB_NAME)
         app.state.mongo = mongo
         print(
-            f"Application startup: Successfully connected to MongoDB database {settings.MONGO_DB_NAME}!"
+            "Application startup: Successfully connected to MongoDB database "
+            f"{settings.MONGO_DB_NAME}!"
         )
     except ConnectionFailure as e:
         if mongo.client:
@@ -45,17 +55,8 @@ async def lifespan(app: FastAPI):
     yield
     if hasattr(app.state, "mongo_client") and app.state.mongo.client:
         app.state.mongo.client.close()
-{%- endif %}
 
-{% if cookiecutter.database == "sqlite (aiosqlite)" -%}
-from fastapi.concurrency import asynccontextmanager
-from app.core.sqlite import engine, Base
-
-from app.core.sqlite import session_factory
-from app.api.models.user import User
-from app.api.models.todo import Todo
-
-
+{% elif cookiecutter.database == "sqlite (aiosqlite)" -%}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
