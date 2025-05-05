@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 import git
 import requests
@@ -67,5 +68,10 @@ def checkDatabaseOption(selection):
     for d in databases:
         db_name = d.split(' ')[0]
         os.remove(f"app/core/{db_name}.py")
+    
+    # Remove useless relation class for Mongo
+    if selection == "mongodb (motor)":
+        shutil.rmtree("app/api/models")
+        shutil.rmtree("app/api/schemas")
 
     
