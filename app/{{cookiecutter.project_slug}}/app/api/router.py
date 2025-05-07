@@ -17,10 +17,8 @@ def import_router(router_directory: str, module_name: str):
     # Import the module dynamically
     module = __import__(f"{router_directory}.{module_name}", fromlist=["router"])
 
-    # Get the router from the module
     router = getattr(module, "router")
 
-    # Include the router
     api_router.include_router(
         router,
         prefix=f"/{module_name}",
@@ -28,7 +26,6 @@ def import_router(router_directory: str, module_name: str):
     )
 
 
-# Iterate through files in the directory
 for directory in ROUTERS_DIRECTORIES:
     try:
         for filename in os.listdir(directory):

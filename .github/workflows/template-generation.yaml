@@ -21,40 +21,39 @@ jobs:
       - name: Install global dependencies
         run: pip install -r requirements.txt
 
-      - name: Generate backend template
-        run: cd ../ && cookiecutter fastapi-base/app --no-input
-
       - name: Install uv (in generated project context)
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Test generated application
-        working-directory: ../my_awesome_api
-        run: |
-          uv venv --python $(which python)
-          source .venv/bin/activate
+      - name: Generate No DB template
+        with:
+          project_slug: my_awesome_no_db_api
+          database: none
+        uses: ./.github/actions/generate-template
+      
+      - name: Test No DB application
+        with:
+          workdir: ../my_awesome_no_db_api
+        uses: ./.github/actions/test-template
 
-          uv pip install -e .[dev]
+      
+      - name: Generate SQL template
+        with:
+          project_slug: my_awesome_sql_api
+          database: sqlite (aiosqlite)
+        uses: ./.github/actions/generate-template
+      
+      - name: Test SQL application
+        with:
+          workdir: ../my_awesome_sql_api
+        uses: ./.github/actions/test-template
+        
+      - name: Generate Mongo template
+        with:
+          project_slug: my_awesome_mongo_api
+          database: mongodb (motor)
+        uses: ./.github/actions/generate-template
 
-          echo "Checking server status"
-          uvicorn app.main:app --port 8000 &
-          WAIT_INTERVAL=1
-          ELAPSED_TIME=0
-          while ! curl -sf --head http://localhost:8000/api/health > /dev/null; do
-              if [ $ELAPSED_TIME -ge 5 ]; then
-                  echo "Server failed to start"
-                  exit 1
-              fi
-              sleep $WAIT_INTERVAL
-              ELAPSED_TIME=$((ELAPSED_TIME + WAIT_INTERVAL))
-          done
-          
-          echo "Running Ruff..."
-          ruff check app tests
-
-          echo "Running MyPy..."
-          mypy app
-
-          echo "Running Pytest..."
-          pytest
-
-          
+      - name: Test MongoDB application
+        with:
+          workdir: ../my_awesome_mongo_api
+        uses: ./.github/actions/test-template

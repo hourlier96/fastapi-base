@@ -9,6 +9,6 @@
     "project_name": "Select your project name:",
     "project_slug": "Select your project slug:",
     "description": "Add a description to the ReadMe:",
-    "database_type": "Select database dependencies to include: "
+    "database": "Select database base code to include: "
   }
 }

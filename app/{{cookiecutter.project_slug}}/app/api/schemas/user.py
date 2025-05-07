@@ -1,6 +1,6 @@
-from enum import Enum
 from typing import List
-from pydantic import BaseModel
+
+from pydantic import BaseModel, ConfigDict
 
 from .todo import TodoRead
 
@@ -9,13 +9,13 @@ class UserBase(BaseModel):
     email: str
 
 
-class UserCreate(UserBase):
-    pass
-
-
 class UserRead(UserBase):
     id: int
     todos: List[TodoRead] = []
 
-    class Config:
-        orm_mode = True
+    # Ensure Pydantic can populate 'UserRead' schema from 'User' model
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserCreate(UserBase):
+    pass

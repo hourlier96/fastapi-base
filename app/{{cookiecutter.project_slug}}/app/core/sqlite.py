@@ -1,10 +1,8 @@
 from typing import Annotated, AsyncGenerator
 
 from fastapi import Depends
-
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
 
 
 class Base(DeclarativeBase):
@@ -14,12 +12,11 @@ class Base(DeclarativeBase):
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite+aiosqlite:///{sqlite_file_name}"
 engine = create_async_engine(sqlite_url, echo=True)
-session_factory = sessionmaker(
+session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
-    expire_on_commit=False,
-    autocommit=False,
     autoflush=False,
+    expire_on_commit=False,
 )
 
 

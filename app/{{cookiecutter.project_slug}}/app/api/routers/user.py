@@ -1,8 +1,15 @@
 from typing import Annotated, Dict
-
 from fastapi import APIRouter, Query
 
-{% if cookiecutter.database == "mongodb (motor)" -%}
+{% if cookiecutter.database == "none" -%}
+
+router = APIRouter()
+
+@router.get("")
+def get_user() -> Dict:
+    return {"users": []}
+
+{% elif cookiecutter.database == "mongodb (motor)" -%}
 from app.core.mongodb import SessionDep
 
 router = APIRouter()
@@ -22,9 +29,8 @@ async def get_user_by_email(email: Annotated[str, Query()], session: SessionDep)
 async def create_user(user: Dict, session: SessionDep) -> Dict:
     await session.insert("test_collection", user)
     return {"status": "User created"}
-{% endif %}
 
-{% if cookiecutter.database == "sqlite (aiosqlite)" -%}
+{% elif cookiecutter.database == "sqlite (aiosqlite)" -%}
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
@@ -35,7 +41,6 @@ from app.api.schemas.user import UserCreate, UserRead
 
 router = APIRouter()
 
-
 @router.get("/users/{user_id}", response_model=UserRead)
 async def get_user(user_id: int, session: SessionDep) -> UserRead:
     stmt = select(User).where(User.id == user_id).options(selectinload(User.todos))
@@ -43,7 +48,7 @@ async def get_user(user_id: int, session: SessionDep) -> UserRead:
     user = result.scalar_one_or_none()
     if not user:
         raise_404(msg=f"User with id {user_id} not found")
-    return user
+    return UserRead.model_validate(user)
 
 
 @router.post("/users", response_model=UserRead, status_code=201)

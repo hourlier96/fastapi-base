@@ -35,6 +35,7 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
+
 app.include_router(api_router, prefix=settings.API_PREFIX)
 
 {% if cookiecutter.database == "mongodb (motor)" -%}
@@ -84,7 +85,9 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.drop_all)
 {%- endif %}
 
+{% if cookiecutter.database != "none" -%}
 app.router.lifespan_context = lifespan
+{%- endif %}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
