@@ -11,10 +11,10 @@ from pymongo.errors import ConnectionFailure
 from app.core.mongodb import MongoDB
 {% endif %}
 
-{% if cookiecutter.database == "sqlite (aiosqlite)" -%}
+{% if cookiecutter.database == "sqlite (aiosqlite)" or cookiecutter.database == "postgresql (asyncpg)"-%}
 from fastapi.concurrency import asynccontextmanager
-from app.core.sqlite import engine, Base
-from app.core.sqlite import session_factory
+from app.core.db import engine, Base
+from app.core.db import session_factory
 from app.api.models.user import User
 from app.api.models.todo import Todo
 {% endif %}
@@ -57,7 +57,7 @@ async def lifespan(app: FastAPI):
     if hasattr(app.state, "mongo_client") and app.state.mongo.client:
         app.state.mongo.client.close()
 
-{% elif cookiecutter.database == "sqlite (aiosqlite)" -%}
+{% elif cookiecutter.database == "sqlite (aiosqlite)" or cookiecutter.database == "postgresql (asyncpg)"-%}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:

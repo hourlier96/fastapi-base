@@ -12,3 +12,15 @@ services:
       PYDEVD_DISABLE_FILE_VALIDATION: 1
     volumes:
       - ./:/home/appuser/code
+
+  db:
+    container_name: "{{cookiecutter.project_slug}}_db"
+    image: postgres:latest
+    volumes:
+      - .pgdata:/var/lib/postgresql/data
+    ports:
+      - 5436:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: "{{cookiecutter.project_slug}}_db"
