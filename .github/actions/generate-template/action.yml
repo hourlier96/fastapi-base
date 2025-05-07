@@ -1,0 +1,22 @@
+name: "Generate template"
+description: "Install, lint, typecheck and test a FastAPI app"
+inputs:
+  project_slug:
+    description: "Name of folder generated"
+    required: true
+  database:
+    description: "Database selected on generation"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        cd ../
+        jq '.project_slug = "${{ inputs.project_slug }}" | .database = "${{ inputs.database }}"' \
+        fastapi-base/app/cookiecutter.json > fastapi-base/app/cookiecutter.tmp.json
+        mv fastapi-base/app/cookiecutter.tmp.json fastapi-base/app/cookiecutter.json
+
+        cookiecutter fastapi-base/app --no-input
+      
+      shell: bash

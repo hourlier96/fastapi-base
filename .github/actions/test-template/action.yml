@@ -1,0 +1,40 @@
+name: "Test template"
+description: "Install, lint, typecheck and test a FastAPI app"
+inputs:
+  workdir:
+    description: "Working directory to run tests in"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        cd ${{ inputs.workdir }}
+        uv venv --python $(which python)
+        source .venv/bin/activate
+
+        uv pip install -e .[dev]
+
+        echo "Checking server status"
+        uvicorn app.main:app --port 8000 &
+        WAIT_INTERVAL=1
+        ELAPSED_TIME=0
+        while ! curl -sf --head http://localhost:8000/api/health > /dev/null; do
+            if [ $ELAPSED_TIME -ge 5 ]; then
+                echo "Server failed to start"
+                exit 1
+            fi
+            sleep $WAIT_INTERVAL
+            ELAPSED_TIME=$((ELAPSED_TIME + WAIT_INTERVAL))
+        done
+        
+        echo "Running Ruff..."
+        ruff check app tests
+
+        echo "Running MyPy..."
+        mypy app
+
+        echo "Running Pytest..."
+        pytest
+
+      shell: bash

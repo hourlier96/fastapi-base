@@ -1,4 +1,7 @@
 import json
+import os
+import shutil
+import subprocess
 
 import git
 import requests
@@ -56,3 +59,23 @@ def enableBranchesProtection(repo_name, github_token):
             print(f"Failed to activate protection for branch {branch}:")
             print(response.json())
             break
+
+def checkDatabaseOption(selection):
+    databases = ["sqlite (aiosqlite)", "mongodb (motor)"]
+    if selection in databases:
+        del databases[databases.index(selection)]
+    
+    # Remove all database clients except selected
+    for d in databases:
+        db_name = d.split(' ')[0]
+        os.remove(f"app/core/{db_name}.py")
+    
+    # Remove useless relation class for Mongo
+    if selection == "mongodb (motor)":
+        shutil.rmtree("app/api/models")
+        shutil.rmtree("app/api/schemas")
+
+    # Run ruff before pushing
+    print("Formatting code...")
+    subprocess.run(["ruff", "format", "app/"])
+    subprocess.run(["ruff", "check", "--fix", "app/"])

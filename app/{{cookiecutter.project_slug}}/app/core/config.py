@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api"
     BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
 
+{%- if cookiecutter.database == "mongodb (motor)" %}
+    DB_ADDRESS: str = "host.docker.internal"       # or localhost without container
+    MONGO_DB_NAME : str = "test_db"
+    MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"
+{%- endif %}    
+
     model_config = SettingsConfigDict(env_file=".env")
 
 
