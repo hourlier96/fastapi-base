@@ -9,6 +9,19 @@ jobs:
   test-generation:
     name: "Lint & run generated application"
     runs-on: ubuntu-latest
+
+    services:
+      # Required for testing Postgres template generation
+      postgres_db:
+          image: postgres:latest
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: my_awesome_postgres_api_db
+          ports:
+            - 5436:5432
+          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -36,15 +49,26 @@ jobs:
         uses: ./.github/actions/test-template
 
       
-      - name: Generate SQL template
+      - name: Generate SQLite template
         with:
-          project_slug: my_awesome_sql_api
+          project_slug: my_awesome_sqlite_api
           database: sqlite (aiosqlite)
         uses: ./.github/actions/generate-template
       
-      - name: Test SQL application
+      - name: Test SQLite application
         with:
-          workdir: ../my_awesome_sql_api
+          workdir: ../my_awesome_sqlite_api
+        uses: ./.github/actions/test-template
+
+      - name: Generate PostgreSQL template
+        with:
+          project_slug: my_awesome_postgres_api
+          database: postgresql (asyncpg)
+        uses: ./.github/actions/generate-template
+      
+      - name: Test PostgreSQL application
+        with:
+          workdir: ../my_awesome_postgres_api
         uses: ./.github/actions/test-template
         
       - name: Generate Mongo template

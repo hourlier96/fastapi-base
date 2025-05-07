@@ -16,7 +16,11 @@ class Settings(BaseSettings):
     DB_ADDRESS: str = "host.docker.internal"       # or localhost without container
     MONGO_DB_NAME : str = "test_db"
     MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"
-{%- endif %}    
+{%- elif cookiecutter.database == "postgresql (asyncpg)" %}
+    POSTGRES_DB_NAME: str = "{{cookiecutter.project_slug}}_db"
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql+asyncpg://postgres:postgres@host.docker.internal:5436/{POSTGRES_DB_NAME}"
+{%- endif %}
+
 
     model_config = SettingsConfigDict(env_file=".env")
 

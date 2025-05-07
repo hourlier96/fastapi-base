@@ -30,11 +30,11 @@ async def create_user(user: Dict, session: SessionDep) -> Dict:
     await session.insert("test_collection", user)
     return {"status": "User created"}
 
-{% elif cookiecutter.database == "sqlite (aiosqlite)" -%}
+{% elif cookiecutter.database == "sqlite (aiosqlite)" or  cookiecutter.database == "postgresql (asyncpg)" -%}
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from app.core.sqlite import SessionDep
+from app.core.db import SessionDep
 from app.api.deps import raise_400, raise_404, raise_500
 from app.api.models.user import User
 from app.api.schemas.user import UserCreate, UserRead
