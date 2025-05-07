@@ -62,11 +62,11 @@ def enableBranchesProtection(repo_name, github_token):
 
 def checkDatabaseOption(selection):
     # Remove useless relation class for Mongo
-    if selection == "mongodb (motor)":
+    if selection not in ["sqlite (aiosqlite)", "postgresql (asyncpg)"]:
         shutil.rmtree("app/api/models")
         shutil.rmtree("app/api/schemas")
         os.remove("app/core/db.py")
-    else:
+    elif selection != "mongodb (motor)":
         os.remove("app/core/mongodb.py")
 
     # Run ruff before pushing

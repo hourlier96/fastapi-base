@@ -6,36 +6,15 @@ on:
       - main
 
 jobs:
-  test-generation:
-    name: "Lint & run generated application"
+  test-no-db:
+    name: "Lint & run application (no db)"
     runs-on: ubuntu-latest
-
-    services:
-      # Required for testing Postgres template generation
-      postgres_db:
-          image: postgres:latest
-          env:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: my_awesome_postgres_api_db
-          ports:
-            - 5436:5432
-          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-
-      - name: Install global dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install uv (in generated project context)
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Setup Base Environment
+        uses: ./.github/actions/setup-env
 
       - name: Generate No DB template
         with:
@@ -47,37 +26,81 @@ jobs:
         with:
           workdir: ../my_awesome_no_db_api
         uses: ./.github/actions/test-template
-
-      
-      - name: Generate SQLite template
-        with:
-          project_slug: my_awesome_sqlite_api
-          database: sqlite (aiosqlite)
-        uses: ./.github/actions/generate-template
-      
-      - name: Test SQLite application
-        with:
-          workdir: ../my_awesome_sqlite_api
-        uses: ./.github/actions/test-template
-
-      - name: Generate PostgreSQL template
-        with:
-          project_slug: my_awesome_postgres_api
-          database: postgresql (asyncpg)
-        uses: ./.github/actions/generate-template
-      
-      - name: Test PostgreSQL application
-        with:
-          workdir: ../my_awesome_postgres_api
-        uses: ./.github/actions/test-template
         
-      - name: Generate Mongo template
-        with:
-          project_slug: my_awesome_mongo_api
-          database: mongodb (motor)
-        uses: ./.github/actions/generate-template
+      
 
-      - name: Test MongoDB application
-        with:
-          workdir: ../my_awesome_mongo_api
-        uses: ./.github/actions/test-template
+  test-sqlite-db:
+      name: "Lint & run application (SQLite)"
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v4
+
+        - name: Setup Base Environment
+          uses: ./.github/actions/setup-env
+
+        - name: Generate SQLite template
+          with:
+            project_slug: my_awesome_sqlite_api
+            database: sqlite (aiosqlite)
+          uses: ./.github/actions/generate-template
+      
+        - name: Test SQLite application
+          with:
+            workdir: ../my_awesome_sqlite_api
+          uses: ./.github/actions/test-template
+
+  test-postgres-db:
+      name: "Lint & run application (PostgreSQL)"
+      runs-on: ubuntu-latest
+      services:
+          # Required for testing Postgres template generation
+          postgres_db:
+              image: postgres:latest
+              env:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: my_awesome_postgres_api_db
+              ports:
+                - 5436:5432
+              options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v4
+
+        - name: Setup Base Environment
+          uses: ./.github/actions/setup-env
+
+        - name: Generate PostgreSQL template
+          with:
+            project_slug: my_awesome_postgres_api
+            database: postgresql (asyncpg)
+          uses: ./.github/actions/generate-template
+        - name: Test PostgreSQL application
+          with:
+            workdir: ../my_awesome_postgres_api
+          uses: ./.github/actions/test-template
+
+  test-mongo-db:
+      name: "Lint & run application (MongoDB)"
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v4
+
+        - name: Setup Base Environment
+          uses: ./.github/actions/setup-env
+
+        - name: Generate Mongo template
+          with:
+            project_slug: my_awesome_mongo_api
+            database: mongodb (motor)
+          uses: ./.github/actions/generate-template
+
+        - name: Test MongoDB application
+          with:
+            workdir: ../my_awesome_mongo_api
+          uses: ./.github/actions/test-template
+
+        

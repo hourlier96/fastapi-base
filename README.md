@@ -66,5 +66,5 @@ The generation is tested to ensure the template is working as expected.
 Test locally with [act](https://github.com/nektos/act):
 
 ```sh
-act -j test-generation --rm -W .github/workflows/template-generation.yaml
+act -j <job_name> --rm -W .github/workflows/template-generation.yaml
 ```
