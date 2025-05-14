@@ -1,0 +1,19 @@
+name: "Setup Base Environment"
+description: "Checks out code, sets up Python, installs global dependencies and uv"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Install global dependencies
+      shell: bash
+      run: pip install -r requirements.txt
+
+    - name: Install uv
+      shell: bash
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
