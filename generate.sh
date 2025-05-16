@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo "==========================="
+echo -e "\n==========================="
 echo "|    FastAPI Generator    |"
-echo "==========================="
-echo "This script will generate a new folder at $(realpath ../)"
-echo "It will create a virtual environment and install the required dependencies."
-echo ""
-
+echo "|                         |"
+echo "|    by @hourlier96       |"
+echo -e "===========================\n"
+echo "This script will generate a new folder"
+echo -e "Ensure the project slug you gonna choose is available at '$(realpath ../)'\n"
 
 CLONE_DIR="fastapi-base"
 VENV_DIR=".venv"
@@ -43,8 +43,11 @@ fi
 
 cd ..
 
+echo -e "------------------------------------------------------"
 if ! cookiecutter "$CLONE_DIR"/app; then
   rm -rf "$CLONE_DIR"/"$VENV_DIR"
   exit 1
 fi
 rm -rf "$CLONE_DIR"/"$VENV_DIR"
+echo -e "\n----------------------------------------------------"
+
