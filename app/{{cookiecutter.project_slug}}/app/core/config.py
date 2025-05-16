@@ -1,11 +1,11 @@
 import logging
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from pydantic import Field
 
 class Settings(BaseSettings):
     ENV: str = "local"
-    LOG_LEVEL: int = logging.INFO
+    LOG_LEVEL: str = Field(default=logging.INFO)
     LOG_NAME: str = "fastapi-base"
     PROJECT_NAME: str = "FastAPI Base Environment"
 
@@ -17,11 +17,11 @@ class Settings(BaseSettings):
     MONGO_DB_NAME : str = "test_db"
     MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"
 {%- elif cookiecutter.database == "postgresql (asyncpg)" %}
-    POSTGRES_SERVER: str = "db"
-    POSTGRES_DB_NAME: str = "{{cookiecutter.project_slug}}_db"
-    POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
+    POSTGRES_SERVER: str = Field(...)
+    POSTGRES_DB_NAME: str = Field(...)
+    POSTGRES_PORT: int = Field(default=5432)
+    POSTGRES_USER: str = Field(...)
+    POSTGRES_PASSWORD: str = Field(...)
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

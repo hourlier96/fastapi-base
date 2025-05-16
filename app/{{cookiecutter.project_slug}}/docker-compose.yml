@@ -3,7 +3,7 @@ services:
     image: "{{cookiecutter.project_slug}}:latest"
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
     ports:
       - "8000:8000"
       - "5678:5678"

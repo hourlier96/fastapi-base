@@ -47,3 +47,36 @@ Actions are configured to run linting for every Pull Request on 'develop', 'next
 ## Api docs
 
 - [Swagger](http://localhost:8000/api/docs)
+
+## Quickstart
+
+1. Copy the example environment file and adapt values if needed:
+
+```sh
+cp .env.example .env
+```
+
+1. Run in a Dev Container (recommended for development):
+
+```sh
+# Start the devcontainer and run the `app` service.
+devcontainer up --build-no-cache --workspace-folder .
+```
+
+This repository includes a `devcontainer` configuration that will:
+
+- start the `app` service from `docker-compose.yml`,
+- run a small setup script to install dev dependencies, and
+- launch `uvicorn app.main:app --reload` inside the container.
+
+1. Run locally (alternative):
+
+```sh
+# create venv and install deps (example)
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev]
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Open the docs at `http://localhost:8000/api/docs`.

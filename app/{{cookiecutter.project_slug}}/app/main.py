@@ -1,9 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from app.middleware.request_response_logger import RequestResponseLoggingMiddleware
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.core.logging import configure_logging
 
 {% if cookiecutter.database == "mongodb (motor)" -%}
 from fastapi.concurrency import asynccontextmanager
@@ -18,6 +20,8 @@ from app.core.db import session_factory
 from app.api.models.user import User
 from app.api.models.todo import Todo
 {% endif %}
+
+configure_logging(settings)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -34,6 +38,9 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+# Add request/response logging middleware (placed after CORS)
+app.add_middleware(RequestResponseLoggingMiddleware)
 
 
 app.include_router(api_router, prefix=settings.API_PREFIX)

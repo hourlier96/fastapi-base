@@ -37,4 +37,8 @@ COPY --chown=appuser:appgroup ./ /home/appuser/code/
 EXPOSE 8000
 EXPOSE 5678
 
-CMD ["python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENV APP_ENV=local
+
+# Default: run in dev mode with debugpy + uvicorn --reload.
+# To run in production mode set `APP_ENV=prod` (the image will run uvicorn without --reload).
+CMD ["sh", "-c", "if [ \"$APP_ENV\" = \"prod\" ]; then exec uvicorn app.main:app --host 0.0.0.0 --port 8000; else exec python -m debugpy --listen 0.0.0.0:5678 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload; fi"]
