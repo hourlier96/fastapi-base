@@ -16,26 +16,13 @@ New project generation with [cookiecutter](https://github.com/cookiecutter/cooki
 
 ## Generation
 
-Clone this repository and install dependencies
+Clone this repository and generate a new project
 
 ```bash
-cd fastapi-base
-uv venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
-```
-
-(Optional): Add a github access token to .env file if you want the branch protection to be automated at generation
-
-```bash
-# .env content ...
-GITHUB_ACCESS_TOKEN="<PERSONAL_ACCESS_TOKEN>"
-```
-
-Generate the code base
-
-```bash
-cookiecutter fastapi-base/app   # Will ask your needs from cookiecutter.json
+./generate.sh
+# or
+./generate.sh GITHUB_ACCESS_TOKEN="<token>"
+# Add a github access token as parameter for branch protection
 ```
 
 ### Options
@@ -47,17 +34,17 @@ cookiecutter fastapi-base/app   # Will ask your needs from cookiecutter.json
 
   # 1. Ensure you have corrects SSH rights & access
 
-  # 2. This will also set branch protection if you specified GITHUB_ACCESS_TOKEN variable in .env
+  # 2. This will also set branch protection if you specified GITHUB_ACCESS_TOKEN
   # Change settings as your convenience in hooks_modules/branch_protection.json
   ```
 
-- **'project_name'** is the name on the top of ReadMe.
+- **'project_name'**: is the name on the top of ReadMe.
 
-- **'project_slug'** is the name of the generated folder
+- **'project_slug'**: is the name of the generated folder
 
-- **'description'** will be added under the project name in the ReadMe.
+- **'description'**: will be added under the project name in the ReadMe.
 
-- **'database'** will add selected async dependencies to the pyproject.toml
+- **'database'**: configures the code to interact with selected database
 
 ## CI
 
