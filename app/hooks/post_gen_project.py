@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
         print("\nDone ! 🎉")
         print(
-            "Project is ready to be used in folder './{{ cookiecutter.project_slug }}'"
+            "Project is ready to be used in folder '{{ cookiecutter.project_slug }}'"
         )
         print("Check the README.md for more information about how to use the project")
     except Exception as e:
