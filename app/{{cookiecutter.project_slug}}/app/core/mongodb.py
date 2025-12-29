@@ -25,7 +25,7 @@ class MongoDB:
 
     async def find(self, collection: str, filters: dict, multiple: bool = False):
         try:
-            if not self.db:
+            if self.db is None:
                 raise ConnectionError("MongoDB is not connected")
             if not multiple:
                 return await self.db[collection].find_one(filters)
@@ -35,7 +35,7 @@ class MongoDB:
 
     async def insert(self, collection: str, content: Union[list, dict]):
         try:
-            if not self.db:
+            if self.db is None:
                 raise ConnectionError("MongoDB is not connected")
             if isinstance(content, list):
                 await self.db[collection].insert_many(content)

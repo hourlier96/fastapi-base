@@ -13,14 +13,20 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
 
 {%- if cookiecutter.database == "mongodb (motor)" %}
-    DB_ADDRESS: str = "localhost"       # or host.docker.internal from containerized env
+    DB_ADDRESS: str = "host.docker.internal"    # or 'localhost' from direct host access
     MONGO_DB_NAME : str = "test_db"
     MONGO_DB_URI: str = f"mongodb://{DB_ADDRESS}:27017/"
 {%- elif cookiecutter.database == "postgresql (asyncpg)" %}
+    POSTGRES_SERVER: str = "db"
     POSTGRES_DB_NAME: str = "{{cookiecutter.project_slug}}_db"
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql+asyncpg://postgres:postgres@localhost:5436/{POSTGRES_DB_NAME}"
-{%- endif %}
+    POSTGRES_PORT: int = 5432
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "postgres"
 
+    @property
+    def SQLALCHEMY_DATABASE_URI(self) -> str:
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB_NAME}"
+{%- endif %}
 
     model_config = SettingsConfigDict(env_file=".env")
 

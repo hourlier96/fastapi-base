@@ -13,14 +13,25 @@ services:
     volumes:
       - ./:/home/appuser/code
 
+
+{%- if cookiecutter.database == "mongodb (motor)" %}
+  mongo:
+    container_name: "{{cookiecutter.project_slug}}_mongo"
+    image: mongo:latest
+    volumes:
+      - .mongodata:/data/db
+    ports:
+      - 27017:27017
+{%- elif cookiecutter.database == "postgresql (asyncpg)" %}
   db:
     container_name: "{{cookiecutter.project_slug}}_db"
     image: postgres:latest
     volumes:
-      - .pgdata:/var/lib/postgresql/data
+      - .pgdata:/var/lib/postgresql
     ports:
       - 5436:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: "{{cookiecutter.project_slug}}_db"
+{%- endif %}
