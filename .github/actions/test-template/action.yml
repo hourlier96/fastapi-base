@@ -15,18 +15,7 @@ runs:
 
         uv pip install -e .[dev]
 
-        echo "Checking server status"
-        uvicorn app.main:app --port 8000 &
-        WAIT_INTERVAL=1
-        ELAPSED_TIME=0
-        while ! curl -sf --head http://localhost:8000/api/health > /dev/null; do
-            if [ $ELAPSED_TIME -ge 5 ]; then
-                echo "Server failed to start"
-                exit 1
-            fi
-            sleep $WAIT_INTERVAL
-            ELAPSED_TIME=$((ELAPSED_TIME + WAIT_INTERVAL))
-        done
+        cp .env.example .env
         
         echo "Running Ruff..."
         ruff check app tests

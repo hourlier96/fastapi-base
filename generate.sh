@@ -28,7 +28,7 @@ if [ -d "$VENV_DIR" ]; then
   exit 1
 fi
 
-uv venv "$VENV_DIR" > /dev/null 2>&1
+uv venv "$VENV_DIR" --python python3.13 > /dev/null 2>&1
 source "$VENV_DIR/bin/activate" > /dev/null 2>&1
 
 uv pip install -r requirements.txt > /dev/null 2>&1

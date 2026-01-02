@@ -52,10 +52,6 @@ async def lifespan(app: FastAPI):
     try:
         mongo = MongoDB(settings.MONGO_DB_URI, settings.MONGO_DB_NAME)
         app.state.mongo = mongo
-        print(
-            "Application startup: Successfully connected to MongoDB database "
-            f"{settings.MONGO_DB_NAME}!"
-        )
     except ConnectionFailure as e:
         if mongo.client:
             mongo.client.close()

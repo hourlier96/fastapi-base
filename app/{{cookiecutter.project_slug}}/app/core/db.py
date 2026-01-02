@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
     pass
 
 {%- if cookiecutter.database == "postgresql (asyncpg)" %}
-engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI, echo=True)
+engine = create_async_engine(settings.SQLALCHEMY_DB_URI, echo=True)
 {%- elif cookiecutter.database == "sqlite (aiosqlite)" %}
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite+aiosqlite:///{sqlite_file_name}"

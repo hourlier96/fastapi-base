@@ -56,5 +56,5 @@
       "label": "Python Debugger"
     }
   },
-  "postCreateCommand": "if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then pre-commit install; else echo 'Skipping pre-commit install: Not a git repository.'; fi"
+  "postCreateCommand": "cp -n .env.example .env && echo 'Copied .env.example to .env' && if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then pre-commit install; else echo 'Skipping pre-commit install: Not a git repository.'; fi"
 }

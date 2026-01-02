@@ -19,6 +19,10 @@ New project generation with [cookiecutter](https://github.com/cookiecutter/cooki
 Clone this repository and generate a new project
 
 ```bash
+# Install uv 
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.13
+
 ./generate.sh
 # or
 ./generate.sh GITHUB_ACCESS_TOKEN="<token>"
@@ -53,5 +57,7 @@ The generation is tested to ensure the template is working as expected.
 Test locally with [act](https://github.com/nektos/act):
 
 ```sh
+# Get available jobs list
+act --l
 act -j <job_name> --rm -W .github/workflows/template-generation.yaml
 ```
